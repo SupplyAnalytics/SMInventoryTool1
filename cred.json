@@ -1,0 +1,13 @@
+{
+    "type": "service_account",
+    "project_id": "supply-and-finance-analytics",
+    "private_key_id": "0f7b5a179bd294ceb3435a9310ff740eddbaef74",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDCTTUSq2JrUwSw\nG2bN8cWjX7yyMY2+mVShXTQTNzY38zqE46wzta/FOHR0PmSdN2tsu5ia+8ZeMbij\nZnnlZ2oUBFhWZQdbE3TJp9QPYVFvmPo8CmwjJ2tjPV8Bk1gpkM5VSg4elakJKFe1\nrH5ky/D4avpTj6BFloAqMBkhrN0px4DJWJXvWNcMAc/bp8LcJQs4H94RFBhmwS4+\n/hjzFmT28qe7CPZX9dEqrBSV81lVC4DPLbHHJoLLvGy1dYxy17TKclWJQFD8RVRF\nK6rOyh3WQeUtan69dIri643VIar+34gAYKQmDcOGLCf0NER1i8deOlKsEXObP4lO\nAxmAjwHBAgMBAAECggEAAZ8pWT2K9cBcoqen5QImlyV+arJVL4kSFsKzY5GrZy4l\nh+RqlIforqm49xtqNZG32NF8BZciYbjihKKfU9XYIdCjeB0hwZXY/LHk6Df0uQy6\n0fN4UZbLo6loeJflPXuS7U1P7ttq7MOkb8S/zVGSclBaRIZHXS1TZoa+PvS1Z9rZ\ns6Xhs8HG30k0yMixQTTnUwT5coAhcrYA4EkEOAMRXS6LId5rsgYaQ6FdAcg48IN+\nmwfrnuGnnpJLzmtvyFmmB42ScDM8qaVJBisSLMZx9X78VTF3LX4xrD1bRjppfK4D\nSDddAc30MVkDaXLscOi0kYvS/Rrcg4s2wZntEANpAQKBgQDnAT4eeGqKcPq20qY9\nqv0l43MLHlSO7oow7kluYYCpFrSZlU/QixopyS8gjOtziOGhNZgVPlz/HIydGEwl\nlylKf8BbEQktWkIj9pWCYBgSgfDdzTBUWYEbrPE4NShZzFFGl9S/Xea7ifDLz2tL\nu9hiiv5ej/lR/tNYuHgSg2xqcQKBgQDXU0vpXAe+xRyX3qmETaFUSNXKTUVpQE+E\n5vyA5xiZmDZrjkxOTw7/9Y2A1mDzBnYaUqtNiKiE+4LwgedRbfc/JAl/9VNIqQ6T\nT/Ix3VKx961ObeTQjW35ibzI8vU9B7urifDg9ZFFJzEtIGp8UFSiBDDwZhwNw9zW\n0DFTxTiUUQKBgEBu8Ey/ebgz2zqzdvssfn/a+XPYee2ES7dqP8EyIRkI5EcShri8\nlAejviluJR6Mx6KXuFv0kSv3YqFO7a5ug23sRFMiZVTpIBm35ev/sbc311+GpDxi\n2shFbOMosKCbhPAT2ZunLXyR9UBkEqGFO84AxwLJVdmxInJUwekoD02BAoGBANb7\n0mn+ubjtolu7MzLmMzIsuk+OkMPCMuK1oNuuX/BSedsvKt5wrsA90XcWE5vxEo+7\nhE8YJ3EGkLhCasrxaQ9Akr+QGAQOzn+kLWM932fSqtUIgZD79BZWQAe+E75Ib0aY\npchlRhJuS/oLSGYv6iAM4TPULyRLLr3HBcjmu1PRAoGBAIjHVCUeQaHdTVrplbHE\nRtsvLHVp+1LmLpTaSKzFdyzo3g/ii1NNx5L7y1SMluspGpu7pggqd4Uas2UxQ9Fl\nW53eTLqOjEPPpwXJtbBpFDrlW86igBMWPJRde3Smq6sm2+oPi3MTsJ/CehHcSPKD\nwcRJvBCvTpEMn5kVoAraqdJc\n-----END PRIVATE KEY-----\n",
+    "client_email": "supply-and-finance@supply-and-finance-analytics.iam.gserviceaccount.com",
+    "client_id": "110894722840857178411",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/supply-and-finance%40supply-and-finance-analytics.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+  }
