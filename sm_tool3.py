@@ -7,6 +7,7 @@ import requests
 import os
 import subprocess
 
+
 # Function to resize the image
 def resize_image(url, width, height):
     response = requests.get(url)
