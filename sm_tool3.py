@@ -5,6 +5,7 @@ from PIL import Image
 from io import BytesIO
 import requests
 import os
+import subprocess
 
 # Function to resize the image
 def resize_image(url, width, height):
@@ -22,10 +23,11 @@ def log_action(log_df, variant_id, AlertType, original_df):
     return log_df, original_df
 
 # Function to run Git commands
-def run_git_commands(csv_file_path, commit_message):
-    os.system(f'git add {csv_file_path}')
-    os.system(f'git commit -m "{commit_message}"')
-    os.system('git push origin main')
+def run_git_commands(file_paths, commit_message):
+    for file_path in file_paths:
+        subprocess.run(['git', 'add', file_path])
+    subprocess.run(['git', 'commit', '-m', commit_message])
+    subprocess.run(['git', 'push', 'origin', 'main'])
 
 # Function to display image gallery
 def image_gallery(df, log_df, result_dict, images, layer_name, start_index):
@@ -53,8 +55,7 @@ def image_gallery(df, log_df, result_dict, images, layer_name, start_index):
                 original_df.to_csv('Inactive_variants_data.csv', index=False)
                 log_df.to_csv('Log_DF.csv', index=False)
                 # Run Git commands
-                run_git_commands('Inactive_variants_data.csv', 'Updated CSV file')
-                run_git_commands('Log_DF.csv', 'Updated log CSV file')
+                run_git_commands(['Inactive_variants_data.csv', 'Log_DF.csv'], 'Updated CSV files')
                 st.rerun()
             
             remove_button = button_cols[1].button(r"$\textsf{-}$", key=unique_key_remove, type="primary")
@@ -66,8 +67,7 @@ def image_gallery(df, log_df, result_dict, images, layer_name, start_index):
                 original_df.to_csv('Inactive_variants_data.csv', index=False)
                 log_df.to_csv('Log_DF.csv', index=False)
                 # Run Git commands
-                run_git_commands('Inactive_variants_data.csv', 'Updated CSV file')
-                run_git_commands('Log_DF.csv', 'Updated log CSV file')
+                run_git_commands(['Inactive_variants_data.csv', 'Log_DF.csv'], 'Updated CSV files')
                 st.rerun()
 
 # Set up the page layout
