@@ -4,62 +4,62 @@ import datetime
 from PIL import Image
 from io import BytesIO
 import requests
+import os
 
-
+# Function to resize the image
 def resize_image(url, width, height):
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
-    img = img.resize((width, height),Image.LANCZOS)
-    
+    img = img.resize((width, height), Image.LANCZOS)
     return img
 
-
-def log_action(log_df, variant_id, status, df):
+# Function to log actions
+def log_action(log_df, variant_id, AlertType, original_df):
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_entry = pd.DataFrame([[variant_id, AlertType, current_time]], columns=['VariantId', 'AlertType', 'Timestamp'])
     log_df = pd.concat([log_df, log_entry], ignore_index=True)
-    df.loc[df['VariantId'] == variant_id, 'AlertType'] = status
-    return log_df, df
+    original_df.loc[original_df['VariantId'] == variant_id, 'AlertType'] = AlertType
+    return log_df, original_df
 
+# Function to display image gallery
 def image_gallery(df, log_df, result_dict, images, layer_name, start_index):
     product_details = result_dict
     num_columns = 8
-    i = 0
 
     cols = st.columns(num_columns)
     for idx, img_url in enumerate(images):
-        col = cols[idx % num_columns] 
-        # image = resize_image(img_url, width = 160, height = 160) 
+        col = cols[idx % num_columns]
         col.image(img_url)
         if img_url in product_details:
             details = product_details[img_url]
             col.write(f"{details['ProductName']}")
-            # col.write(f"{details['Last 30 Days GMV']}")
             
             button_cols = col.columns(2)
-            forward_button = button_cols[0].button(r"$\textsf{+}$", key=f"{idx}_forward_{img_url}_{i}")
+            unique_key_forward = f"{layer_name}_forward_{idx}_{img_url}"
+            unique_key_remove = f"{layer_name}_remove_{idx}_{img_url}"
+            
+            forward_button = button_cols[0].button(r"$\textsf{+}$", key=unique_key_forward)
             if forward_button:
-                log_df, df = log_action(log_df, details['VariantId'], 'Forwarded to seller', df)
+                log_df, original_df = log_action(log_df, details['VariantId'], 'Forwarded to seller', st.session_state.original_df)
                 images.remove(img_url)
                 st.session_state['yellow_images'].append(img_url)
                 st.session_state['log_df'] = log_df
-                df.to_csv('VLD.csv', index=False)
+                original_df.to_csv('Inactive_variants_data.csv', index=False)
+                log_df.to_csv('Log_DF.csv', index=False)
                 st.rerun()
-            remove_button = button_cols[1].button(r"$\textsf{-}$", key=f"{idx}_remove_{img_url}_{i}", type="primary")
+            
+            remove_button = button_cols[1].button(r"$\textsf{-}$", key=unique_key_remove, type="primary")
             if remove_button:
-                log_df, df = log_action(log_df, details['VariantId'], 'Removed', df)
+                log_df, original_df = log_action(log_df, details['VariantId'], 'Removed', st.session_state.original_df)
                 images.remove(img_url)
                 st.session_state[f"{layer_name}_images"] = images
                 st.session_state['log_df'] = log_df
-                df.to_csv('VLD.csv', index=False)
+                original_df.to_csv('Inactive_variants_data.csv', index=False)
+                log_df.to_csv('Log_DF.csv', index=False)
                 st.rerun()
-            log_df.to_csv('Log_DF.csv', index=False)
-            i = i + 1
 
 # Set up the page layout
 st.set_page_config(layout="wide")
-
-
 
 # Initialize session state variables if they don't exist
 if "red_index" not in st.session_state:
@@ -73,15 +73,12 @@ if "green_index" not in st.session_state:
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
-
-
-
 # Check if the user is logged in
 if not st.session_state.logged_in:
     # Login form
     st.title("Login")
     email = st.text_input("Email")
-    col1, col2, col3, col4 = st.columns([1, 1, 1, 1]) 
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
     with col1:
         Platform = st.selectbox("Select Platform", ["All", "Production", "Distribution", "BijnisExpress"], index=0)
     with col2:
@@ -93,10 +90,26 @@ if not st.session_state.logged_in:
     if st.button("Submit"):
         if email:  # You can add more validation if needed
             st.session_state.logged_in = True
+            st.session_state.email = email
             st.rerun()
 else:
     # Main application code
-    df = pd.read_csv('Inactive_variants_data.csv')
+    # Load the original full dataframe
+    if "original_df" not in st.session_state:
+        st.session_state.original_df = pd.read_csv('Inactive_variants_data.csv')
+    
+    # Filter the dataframe based on the logged-in user's email
+    email = st.session_state.email
+    df = st.session_state.original_df[st.session_state.original_df['SmEmail'] == email]
+    
+    # Load persistent log_df
+    if "log_df" not in st.session_state:
+        if os.path.exists('Log_DF.csv'):
+            st.session_state.log_df = pd.read_csv('Log_DF.csv')
+        else:
+            st.session_state.log_df = pd.DataFrame(columns=['VariantId', 'AlertType', 'Timestamp'])
+    
+    log_df = st.session_state.log_df
 
     if "red_images" not in st.session_state:
         st.session_state.red_images = df[df['AlertType'] == "INACTIVE"]['resizeUrl'].tolist()
@@ -104,9 +117,6 @@ else:
         st.session_state.yellow_images = df[df['AlertType'] == "Forwarded to seller"]['resizeUrl'].tolist()
     if "green_images" not in st.session_state:
         st.session_state.green_images = []
-
-    if "log_df" not in st.session_state:
-        st.session_state.log_df = pd.DataFrame(columns=['VariantId', 'Status', 'Timestamp'])
 
     result_dict = {}
     for index, row in df.iterrows():
@@ -117,12 +127,11 @@ else:
             'SMName': row['SMName']
         }
 
-    
-    with st.container(border = True):
+    with st.container(border=True):
         st.header("Out of Stock")
-        image_gallery(df, st.session_state.log_df, result_dict, st.session_state.red_images, 'red', start_index=st.session_state.red_index)
-    with st.container(border = True):
+        image_gallery(df, log_df, result_dict, st.session_state.red_images, 'red', start_index=st.session_state.red_index)
+    with st.container(border=True):
         st.header("Forwarded to Seller")
-        image_gallery(df, st.session_state.log_df, result_dict, st.session_state.yellow_images, 'yellow', start_index=st.session_state.yellow_index)
-    with st.container(border = True):
+        image_gallery(df, log_df, result_dict, st.session_state.yellow_images, 'yellow', start_index=st.session_state.yellow_index)
+    with st.container(border=True):
         st.header("Live Variants")
