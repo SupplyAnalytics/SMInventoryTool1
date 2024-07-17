@@ -24,10 +24,19 @@ def log_action(log_df, variant_id, AlertType, original_df):
 
 # Function to run Git commands
 def run_git_commands(file_paths, commit_message):
-    for file_path in file_paths:
-        subprocess.run(['git', 'add', file_path])
-    subprocess.run(['git', 'commit', '-m', commit_message])
-    subprocess.run(['git', 'push', 'origin', 'main'])
+    # Define the SSH command to use the specific SSH key
+    ssh_command = 'ssh -i ~/.ssh/id_rsa'
+    
+    # Update the Git configuration to use the specified SSH key
+    subprocess.run(['git', 'config', '--global', 'core.sshCommand', ssh_command])
+    
+    try:
+        for file_path in file_paths:
+            subprocess.run(['git', 'add', file_path], check=True)
+        subprocess.run(['git', 'commit', '-m', commit_message], check=True)
+        subprocess.run(['git', 'push', 'origin', 'main'], check=True)
+    except subprocess.CalledProcessError as e:
+        st.error(f"An error occurred while running Git commands: {e}")
 
 # Function to display image gallery
 def image_gallery(df, log_df, result_dict, images, layer_name, start_index):
