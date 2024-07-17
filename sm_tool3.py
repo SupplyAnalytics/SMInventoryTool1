@@ -33,8 +33,8 @@ def image_gallery(df, log_df, result_dict, images, layer_name, start_index):
         col.image(img_url)
         if img_url in product_details:
             details = product_details[img_url]
-            col.write(f"{details['Productname']}")
-            # col.write(f"{details['Last30DayGMV']}")
+            col.write(f"{details['ProductName']}")
+            # col.write(f"{details['Last 30 Days GMV']}")
             
             button_cols = col.columns(2)
             forward_button = button_cols[0].button(r"$\textsf{+}$", key=f"{idx}_forward_{img_url}_{i}")
