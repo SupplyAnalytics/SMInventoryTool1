@@ -112,9 +112,9 @@ else:
     for index, row in df.iterrows():
         result_dict[row['resizeUrl']] = {
             'VariantId': row['VariantId'],
-            'Productname': row['Productname'],
-            'Last30DayGMV': row['Last30DayGMV'],
-            'SM': row['SM']
+            'ProductName': row['ProductName'],
+            'Last 30 Days GMV': row['Last 30 Days GMV'],
+            'SMName': row['SMName']
         }
 
     
