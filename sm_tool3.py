@@ -16,9 +16,9 @@ def resize_image(url, width, height):
 
 def log_action(log_df, variant_id, status, df):
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    log_entry = pd.DataFrame([[variant_id, status, current_time]], columns=['VariantId', 'Status', 'Timestamp'])
+    log_entry = pd.DataFrame([[variant_id, AlertType, current_time]], columns=['VariantId', 'AlertType', 'Timestamp'])
     log_df = pd.concat([log_df, log_entry], ignore_index=True)
-    df.loc[df['VariantId'] == variant_id, 'Status'] = status
+    df.loc[df['VariantId'] == variant_id, 'AlertType'] = status
     return log_df, df
 
 def image_gallery(df, log_df, result_dict, images, layer_name, start_index):
@@ -99,9 +99,9 @@ else:
     df = pd.read_csv('Inactive_variants_data.csv')
 
     if "red_images" not in st.session_state:
-        st.session_state.red_images = df[df['Status'] == "Out of Stock"]['resizeUrl'].tolist()
+        st.session_state.red_images = df[df['AlertType'] == "INACTIVE"]['resizeUrl'].tolist()
     if "yellow_images" not in st.session_state:
-        st.session_state.yellow_images = df[df['Status'] == "Forwarded to seller"]['resizeUrl'].tolist()
+        st.session_state.yellow_images = df[df['AlertType'] == "Forwarded to seller"]['resizeUrl'].tolist()
     if "green_images" not in st.session_state:
         st.session_state.green_images = []
 
