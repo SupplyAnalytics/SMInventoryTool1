@@ -30,6 +30,10 @@ def run_git_commands(file_paths, commit_message):
     # Update the Git configuration to use the specified SSH key
     subprocess.run(['git', 'config', '--global', 'core.sshCommand', ssh_command])
     
+    # Configure the Git user name and email
+    subprocess.run(['git', 'config', '--global', 'user.email', 'supplyanalytics@bijnis.com'])
+    subprocess.run(['git', 'config', '--global', 'user.name', 'SupplyAnalytics'])
+    
     try:
         for file_path in file_paths:
             subprocess.run(['git', 'add', file_path], check=True)
