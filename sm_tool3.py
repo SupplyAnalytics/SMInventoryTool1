@@ -21,6 +21,12 @@ def log_action(log_df, variant_id, AlertType, original_df):
     original_df.loc[original_df['VariantId'] == variant_id, 'AlertType'] = AlertType
     return log_df, original_df
 
+# Function to run Git commands
+def run_git_commands(csv_file_path, commit_message):
+    os.system(f'git add {csv_file_path}')
+    os.system(f'git commit -m "{commit_message}"')
+    os.system('git push origin main')
+
 # Function to display image gallery
 def image_gallery(df, log_df, result_dict, images, layer_name, start_index):
     product_details = result_dict
@@ -46,6 +52,9 @@ def image_gallery(df, log_df, result_dict, images, layer_name, start_index):
                 st.session_state['log_df'] = log_df
                 original_df.to_csv('Inactive_variants_data.csv', index=False)
                 log_df.to_csv('Log_DF.csv', index=False)
+                # Run Git commands
+                run_git_commands('Inactive_variants_data.csv', 'Updated CSV file')
+                run_git_commands('Log_DF.csv', 'Updated log CSV file')
                 st.rerun()
             
             remove_button = button_cols[1].button(r"$\textsf{-}$", key=unique_key_remove, type="primary")
@@ -56,6 +65,9 @@ def image_gallery(df, log_df, result_dict, images, layer_name, start_index):
                 st.session_state['log_df'] = log_df
                 original_df.to_csv('Inactive_variants_data.csv', index=False)
                 log_df.to_csv('Log_DF.csv', index=False)
+                # Run Git commands
+                run_git_commands('Inactive_variants_data.csv', 'Updated CSV file')
+                run_git_commands('Log_DF.csv', 'Updated log CSV file')
                 st.rerun()
 
 # Set up the page layout
